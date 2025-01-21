@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>prescribe.ng</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">prescribe.ng</div>
+        <div class="hamburger">&#9776;</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="partnership.html">Become a partner</a>
+            <a href="credit.html">Top up</a>
+            <a href="clinician.html">Clinician Portal</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="clinician" id="page1" style="display:none">
+            <h2>Clinician Login</h2>
+            <form id="clinician-login-form">
+                <labeL >
+                    Email:
+                  <input type="email" placeholder="Enter your email" required>
+                </labeL><br>
+
+                <labeL >
+                    Password:
+                  <input type="email" placeholder="Enter your email" required>
+                </labeL><br>
+                <button>Login</button><br>
+                <a href="#">forgot password</a>
+            </form>
+        </div>
+
+        <div class="clinician" id="page2" style="display:none">
+            <h3>Enter OTP from your phone</h3>
+            <form id="clinician-login-form">
+                <labeL >
+                    OTP:
+                  <input type="totp" placeholder="Enter OTP" required>
+                </labeL><br>
+
+                <button>Submit</button>
+            </form>
+        </div>
+
+        <div class="clinician" id="page3" style="display:none">
+            <h3>Password reset</h3>
+            <form id="clinician-login-form">
+                <labeL >
+                    Email:
+                  <input type="email" placeholder="Enter registered email" required>
+                </labeL><br>
+
+                <button>Submit</button>
+            </form>
+        </div>
+        
+        <div class="clinician" id="page4" style="display:none">
+            <h2>Clinician Panel</h2>
+            <p>Pioneering the future of healthcare service in Nigeria.</p>
+        </div>
+
+        <div class="clinician" id="page1" style="display:block">
+            <h2>Change Password</h2>
+            <form id="password-change-form">
+                <labeL >
+                    Old Password:
+                  <input type="password"  required>
+                </labeL><br>
+
+                <labeL >
+                    New Password:
+                  <input type="password"  required>
+                </labeL><br>
+
+                <labeL >
+                    Repeat Password:
+                  <input type="password"  required>
+                </labeL><br>
+                
+                <button>Change Password</button><br>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 PrescribeNg LTD. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/script/script.js" defer></script>
+</body>
+</html>
