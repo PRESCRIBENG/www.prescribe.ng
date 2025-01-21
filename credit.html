@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prescribe.ng</title>
+    <style>
+        /* General Reset */
+        body, h1, h2, h3, p, ul, li, a {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(to right, rgb(226, 224, 220), rgb(206, 205, 203));
+            color: #333;
+        }
+
+        header {
+            background: #fff;
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            font-size: 1em;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 10%;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        #paymentForm {
+          display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            margin-top: 50px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            color: #888;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+                background: #fff;
+                position: absolute;
+                top: 60px;
+                right: 10%;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">prescribe.ng</div>
+        <div class="hamburger">&#9776;</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h3>Top up credit for yourself or a friend</h3>
+        <form id="paymentForm">
+
+          <labeL >
+            PPN/NHIS:
+            <input type="text" id="query" placeholder="Enter ppn or nhis number" required>
+          </labeL>
+          <p id="searchResult"></p> <br>
+
+          <labeL >
+            Email:
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </labeL><br><br>
+
+        <labeL >
+          Amount ( ₦):
+          <input type="number" id="amount" placeholder="Enter amount (₦)" required>
+        </labeL><br><br>
+
+        <labeL >
+          Description:
+        <input type="description" id="description" placeholder="Optional" required>
+      </labeL><br><br>
+
+          <input type="hidden" id="public_key" value=""/>
+          <input type="hidden" id="ppn" value=""/>
+          <button type="button" onclick="payWithPaystack()">Pay</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 PrescribeNg Ltd. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const patientInput = document.getElementById("query");
+      const ppn = document.getElementById("ppn");
+      const public_key = document.getElementById("public_key");
+      const searchResult = document.getElementById("searchResult");
+
+      patientInput.addEventListener("input", function () {
+          const inputText = patientInput.value;
+
+          if (inputText.length > 8) {
+              // Make a fetch call to get patient data
+              fetch(`http://127.0.0.1:5002/web/verify_account?query=${inputText}`)
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error("Network response was not ok");
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                      // Update the search result with fetched data
+                      searchResult.innerText = `${data.patient}`;
+                      public_key.value = `${data.public_key}`;
+                      ppn.value = `${data.ppn}`;
+                  })
+                  .catch(error => {
+                      // Handle any errors that occurred during the fetch
+                      searchResult.innerText = "Error fetching data.";
+                      console.error("Fetch error:", error);
+                  });
+          } else {
+              searchResult.innerText = "Input must be greater than 9 characters.";
+          }
+      });
+    </script>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+    </script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+      function payWithPaystack() {
+        const ppn = document.getElementById('ppn').value;
+        const public_key = document.getElementById('public_key').value;
+        const email = document.getElementById('email').value;
+        const amount = document.getElementById('amount').value * 100; // Convert to kobo
+        const description = document.getElementById('description').value;
+
+        const handler = PaystackPop.setup({
+          key: public_key, // Replace with your Paystack public key
+          email: email,
+          amount: amount,
+          currency: 'NGN',
+          metadata: {
+            ppn: ppn, // Include user ID or other unique identifier
+            category: 'patient',
+            email: email, // Optionally include user email
+            description: description, // Additional info
+          },
+          callback: function(response) {
+            alert('Payment successful! Transaction ID: ' + response.reference);
+            // TODO: Send transaction reference to the server for verification
+          },
+          onClose: function() {
+            alert('Transaction cancelled.');
+          }
+        });
+
+        handler.openIframe();
+      }
+    </script>
+</body>
+</html>
