@@ -1,52 +1,109 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-  }
-  
-  header {
-    background-color: orange;
-    color: white;
-    padding: 15px;
-    text-align: center;
-  }
-  
-  nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  nav ul li {
-    display: inline;
-    margin: 0 10px;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .slideshow {
-    display: flex;
-    overflow: hidden;
-    height: 300px;
-  }
-  
-  .slide {
-    display: none;
-    width: 100%;
-    height: auto;
-  }
-  
-  .slide.active {
-    display: block;
-  }
-  
-  footer {
-    text-align: center;
-    background-color: #222;
-    color: white;
-    padding: 10px 0;
-  }
-  
+        /* General Reset */
+        body, h1, h2, h3, p, ul, li, a {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(to right, rgb(226, 224, 220), rgb(206, 205, 203));
+            color: #333;
+        }
+
+        header {
+            background: #fff;
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            font-size: 1em;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 10%;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        #paymentForm {
+          display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            margin-top: 50px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            color: #888;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+                background: #fff;
+                position: absolute;
+                top: 60px;
+                right: 10%;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }

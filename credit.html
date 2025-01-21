@@ -141,17 +141,17 @@
           <labeL >
             Email:
           <input type="email" id="email" placeholder="Enter your email" required>
-        </labeL><br><br>
+          </labeL><br><br>
 
-        <labeL >
-          Amount ( ₦):
-          <input type="number" id="amount" placeholder="Enter amount (₦)" required>
-        </labeL><br><br>
+          <labeL >
+            Amount ( ₦):
+            <input type="number" id="amount" placeholder="Enter amount (₦)" required>
+          </labeL><br><br>
 
-        <labeL >
-          Description:
-        <input type="description" id="description" placeholder="Optional" required>
-      </labeL><br><br>
+          <labeL >
+            Description:
+          <input type="description" id="description" placeholder="Optional" required>
+          </labeL><br><br>
 
           <input type="hidden" id="public_key" value=""/>
           <input type="hidden" id="ppn" value=""/>
@@ -197,14 +197,7 @@
           }
       });
     </script>
-    <script>
-        const hamburger = document.querySelector('.hamburger');
-        const nav = document.querySelector('nav');
-
-        hamburger.addEventListener('click', () => {
-            nav.classList.toggle('active');
-        });
-    </script>
+    <script src="assets/script/script.js" defer></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
       function payWithPaystack() {
