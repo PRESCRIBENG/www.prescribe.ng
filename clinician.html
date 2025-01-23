@@ -71,18 +71,19 @@
         <div class="clinicianPages" id="clinicianPanelPage" style="display:none">
             <div class="panelHeader">
                 <span id="logoutButton" class="logout-button">Logout</span>
-                <h2>Clinician: <span class="dynamic-data" data-key="name"></span></h2>
+                <h2><span class="dynamic-data" data-key="name"></span></h2>
             </div>
             <div class="panelBody">
                 <div style="width: 300px; height:300px; margin:20px; background-color:white; justify-content:center">
                     <img class="photo" src="assets/images/logo.png" alt="Clinician's photo"/>
                 </div>
                 <div style="text-align:left; text-wrap: wrap">
-                    <p>Email: <span class="dynamic-data" data-key="email"></span></p>
-                    <p>Mobile: <span class="dynamic-data" data-key="mobile"></span></p>
-                    <p>License Expiry: <span class="dynamic-data" data-key="licenseExpiry"></span></p>
+                    <p>Domain: <span class="dynamic-data" data-key="domain"></span></p>
                     <p>Specialty: <span class="dynamic-data" data-key="specialty"></span></p>
                     <p>Grade: <span class="dynamic-data" data-key="grade"></span></p>
+                    <p>License Expiry: <span class="dynamic-data" data-key="licenseExpiry"></span></p>
+                    <p>Email: <span class="dynamic-data" data-key="email"></span></p>
+                    <p>Mobile: <span class="dynamic-data" data-key="mobile"></span></p>
                     
                     <p>Account Status: <span class="dynamic-data" data-key="accountStatus"></span></p>
                     <button id="openPasswordChangeForm">Change Password</button>
@@ -460,6 +461,7 @@
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify(data),
+                            credentials: 'include'
                         }
                     );
 

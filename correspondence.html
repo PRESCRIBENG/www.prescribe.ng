@@ -25,14 +25,123 @@
     </header>
 
     <section class="hero">
-        <h1>Correspondence</h1>
-        <p>Verify sick notes, exemption letters, maternity leave</p>
+        <div class="correspondencePages" id="refPage" style="display:block">
+            
+            <div style="margin-top:50px; height:30px; width: 100%">
+                <labeL >
+                  <input type="text" style="height:100%;" id="refID" name="refID" placeholder="Enter letter reference ID" required>
+                  <button onclick="verifyCorrespondence('')">Verify</button>
+                </labeL>
+            </div>
+        </div>
+
+        <div class="correspondencePages" id="letterPage">
+            <iframe id="pdfDisplay" src=""></iframe>
+            <!--<div style="margin-top: 20px; text-align: center;">
+                <button onclick="window.print()">Print</button>
+                <button id="totpCancelButton" onclick="pageNavigation('refPage')">Close</button>
+            </div>-->
+        </div>
+        
+
+        <div class="correspondencePages" id="invalidLetterPage" style="display:none">
+            <div>
+                Oops! ...we do not recognize that reference id.
+            </div>
+            <button id="totpCancelButton" onclick="pageNavigation('refPage')">Close</button>
+        </div>
     </section>
 
     <footer>
         <p>&copy; 2025 PrescribeNg LTD. All rights reserved.</p>
     </footer>
-
+    <input type="hidden" id="base_url" value="http://127.0.0.1:5002" />
     <script src="assets/script/script.js" defer></script>
+
+    <script>
+        function pageNavigation(page){
+            event.preventDefault();
+            // Hide all elements with class 'correspondencePages'
+            let correspondencePages = document.querySelectorAll('.correspondencePages');
+            correspondencePages.forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Show the TOTP page
+            let destinationPage = document.getElementById(page);
+            if (destinationPage) {
+                destinationPage.style.display = 'block';
+            }
+        }
+    </script>
+
+    <script>
+        // VERIFY CORRESPONDENCE LETTER
+        async function verifyCorrespondence() {
+            const baseUrl = document.getElementById('base_url').value; // Get the base URL
+            const refID = document.getElementById('refID').value;
+            if(!refID){
+                alert("Enter a valid reference ID");
+                return;
+            }
+    
+            try {
+                // Send the TOTP verification request to the server
+                const response = await fetch(`${baseUrl}/web/verify_correspondence?refID=${encodeURIComponent(refID)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+    
+                if (response.ok) {
+                    // Get the PDF file as a Blob
+                    const pdfBlob = await response.blob();
+    
+                    // Create an object URL for the PDF
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+    
+                    // Set the object URL as the src of the iframe
+                    const iframe = document.getElementById('pdfDisplay');
+                    iframe.src = pdfUrl;
+    
+                    // Hide all elements with class 'correspondencePages'
+                    let correspondencePages = document.querySelectorAll('.correspondencePages');
+                    correspondencePages.forEach(page => {
+                        page.style.display = 'none';
+                    });
+    
+                    // Show the clinician panel page
+                    let letterPage = document.getElementById('letterPage');
+                    if (letterPage) {
+                        letterPage.style.display = 'block';
+                    } else {
+                        console.error('Letter page element not found.');
+                    }
+                } else {
+                    // Handle failed TOTP authentication
+                    console.error('Letter verification failed:', response.statusText);
+                    //alert('Letter verification failed. Please check your credentials.');
+                    // Hide all elements with class 'correspondencePages'
+                    let correspondencePages = document.querySelectorAll('.correspondencePages');
+                    correspondencePages.forEach(page => {
+                        page.style.display = 'none';
+                    });
+    
+                    // Show the clinician panel page
+                    let invalidLetterPage = document.getElementById('invalidLetterPage');
+                    if (invalidLetterPage) {
+                        invalidLetterPage.style.display = 'block';
+                    } else {
+                        console.error('Invalid letter page element not found.');
+                    }
+                }
+            } catch (err) {
+                console.error('Error during Letter verification:', err);
+                alert('An error occurred during Letter verification. Please try again later.');
+            }
+        };
+    </script>
+    
 </body>
 </html>
