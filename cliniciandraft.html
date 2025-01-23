@@ -52,7 +52,7 @@
                 </labeL><br>
 
                 <button type="submit">Submit</button>
-                <button id="totpCancelButton" onclick="pageNavigation('loginPage')">Cancel</button>
+                <button id="totpCancelButton" onclick="returnToLogin()">Cancel</button>
             </form>
         </div>
 
@@ -69,26 +69,9 @@
         </div>
         
         <div class="clinicianPages" id="clinicianPanelPage" style="display:none">
-            <div class="panelHeader">
-                <span id="logoutButton" class="logout-button">Logout</span>
-                <h2>Clinician: <span class="dynamic-data" data-key="name"></span></h2>
-            </div>
-            <div class="panelBody">
-                <div style="width: 300px; height:300px; margin:20px; background-color:white; justify-content:center">
-                    <img class="photo" src="assets/images/logo.png" alt="Clinician's photo"/>
-                </div>
-                <div style="text-align:left; text-wrap: wrap">
-                    <p>Email: <span class="dynamic-data" data-key="email"></span></p>
-                    <p>Mobile: <span class="dynamic-data" data-key="mobile"></span></p>
-                    <p>License Expiry: <span class="dynamic-data" data-key="licenseExpiry"></span></p>
-                    <p>Specialty: <span class="dynamic-data" data-key="specialty"></span></p>
-                    <p>Grade: <span class="dynamic-data" data-key="grade"></span></p>
-                    
-                    <p>Account Status: <span class="dynamic-data" data-key="accountStatus"></span></p>
-                    <button id="openPasswordChangeForm">Change Password</button>
-                </div>
-            </div>
-            
+            <h2>Clinician Panel</h2>
+
+            <p>Clinician: <span class="dynamic-data" data-key="name"></span></p>
         </div>
 
         <div class="clinicianPages" id="passwordChangePage" style="display:none">
@@ -96,21 +79,20 @@
             <form id="password-change-form">
                 <labeL >
                     Old Password:
-                  <input type="password" name="oldPassword"  required>
+                  <input type="password"  required>
                 </labeL><br>
 
                 <labeL >
                     New Password:
-                  <input type="password" name="newPassword" required>
+                  <input type="password"  required>
                 </labeL><br>
 
                 <labeL >
                     Repeat Password:
-                  <input type="password" name="newPasswordRepeat" required>
+                  <input type="password"  required>
                 </labeL><br>
                 
-                <button >Change Password</button><br>
-                <button id="totpCancelButton" onclick="pageNavigation('clinicianPanelPage')">Cancel</button>
+                <button>Change Password</button><br>
             </form>
         </div>
     </section>
@@ -122,8 +104,8 @@
     <script src="assets/script/script.js" defer></script>
 
     <script>
-         //Logout function
-         document.addEventListener('DOMContentLoaded', function() {
+        //Logout function
+        document.addEventListener('DOMContentLoaded', function() {
             const logoutButton = document.getElementById('logoutButton');
             const baseUrl = document.getElementById('base_url').value; // Get the base URL
         
@@ -150,7 +132,6 @@
             });
         });
         
-
         //Checks session status and loads clinicians data, and if not, set's page to login
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -345,7 +326,7 @@
         }
        
         
-        function pageNavigation(page){
+        function returnToLogin(){
             event.preventDefault();
             // Hide all elements with class 'clinicianPages'
             let clinicianPages = document.querySelectorAll('.clinicianPages');
@@ -354,9 +335,9 @@
             });
 
             // Show the TOTP page
-            let destinationPage = document.getElementById(page);
-            if (destinationPage) {
-                destinationPage.style.display = 'block';
+            let loginPage = document.getElementById('loginPage');
+            if (loginPage) {
+                loginPage.style.display = 'block';
             }
         }
     </script>
@@ -373,8 +354,7 @@
             passwordResetPage.style.display = 'block';
         })
 
-
-        // Password Reset form
+        // Password Reset
         document
             .getElementById('clinician-password-reset-form')
             .addEventListener('submit', async function (event) {
@@ -420,66 +400,6 @@
                 }
             });
 
-
-
-         //display to password reset form
-         document.getElementById('openPasswordChangeForm').addEventListener('click', function(){
-            // Hide all elements with class 'clinicianPages'
-            let clinicianPages = document.querySelectorAll('.clinicianPages');
-            clinicianPages.forEach(page => {
-                page.style.display = 'none';
-            });
-
-            let passwordChangePage = document.getElementById('passwordChangePage');
-            passwordChangePage.style.display = 'block';
-        })
-
-
-        // Password Reset form
-        document
-            .getElementById('password-change-form')
-            .addEventListener('submit', async function (event) {
-                event.preventDefault(); // Prevent form from submitting the traditional way
-
-                const baseUrl = document.getElementById('base_url').value; // Get the base URL
-                const formData = new FormData(event.target); // Get the form data
-
-                // Convert formData to a JSON object
-                const data = {};
-                formData.forEach((value, key) => {
-                    data[key] = value;
-                });
-
-                try {
-                    // Send the password reset request to the server
-                    const response = await fetch(
-                        `${baseUrl}/clinician/change_password`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(data),
-                        }
-                    );
-
-                    // If request is successful
-                    if (response.ok) {
-                        const responseData = await response.json(); // Parse the response JSON
-                        await alert(responseData.message); // Alert the message from the backend
-                    } else {
-                        // Handle failed response
-                        const errorData = await response.json(); // Parse the error JSON (if available)
-                        console.error('Password change failed:', errorData.message || response.statusText);
-                        alert(errorData.message || 'Password change failed. Please check your credentials.');
-                        // reload page... this will take user to login page if their session has expired
-                        window.location.reload();
-                    }
-                } catch (err) {
-                    console.error('Error during password change:', err);
-                    alert('An error occurred during password change. Please try again later.');
-                }
-            });
     </script>
     
 </body>
