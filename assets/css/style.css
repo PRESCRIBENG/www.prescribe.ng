@@ -69,6 +69,12 @@
             margin-top: 10px;
         }
 
+        .clinicianPages button:first-of-type {
+          background-color: #4CAF50;
+          color: white;
+      }
+
+        /*CLINICIAN PORTAL STYLING*/
         .panelHeader {
           position: relative;
           height: 10%;
@@ -104,6 +110,44 @@
         #paymentForm {
           display: block;
         }
+
+        /*CORRESPONDENCE PAGE STYLING*/
+    .correspondencePages {
+        display: none;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #pdfDisplay {
+        width: 100%;
+        height: 600px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .correspondencePages button {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .correspondencePages button:first-of-type {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .correspondencePages button:first-of-type:hover {
+        background-color: #45a049;
+    }
+    .correspondencePages button#totpCancelButton {
+        background-color: #f44336;
+        color: white;
+    }
+    .correspondencePages button#totpCancelButton:hover {
+        background-color: #e53935;
+    }
+
 
         footer {
             text-align: center;
