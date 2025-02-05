@@ -26,23 +26,33 @@
     </header>
 
     <section class="hero">
-        <h3>Top up credit for yourself or a friend</h3>
+        <h3>Save a life</h3>
+        <h4>Save a life by contributing small tokens towards settling healthcare bill of 
+            of friend, acquintance, or even a stranger.</h4>
+        
+            <h3>Please Note the following:</h3>
+        <h4>1. PrescribeNg LTD does not charge a commission on funds donated to patients via our 'save a life' channel.</h4>
+            
+        <h4>2. Funds raised under the 'save a life' channel is neither withdrawable nor 
+            transferrable, instead it is locked in a dedicated account strictly and 
+            automatically used to directly settle medical bills at point of accessing healthcare services.
+        </h4>
         <form id="paymentForm">
 
           <labeL >
-            PPN/NHIS:
-            <input type="text" id="query" placeholder="Enter ppn or nhis number" required>
+            Share Code:
+            <input type="text" id="query" placeholder="Enter patient's share code" required>
           </labeL>
           <p id="searchResult"></p> <br>
 
           <labeL >
-            Email:
-          <input type="email" id="email" placeholder="Enter your email" required>
+            Amount ( ₦):
+            <input type="number" id="amount" placeholder="Enter amount (₦)" required>
           </labeL><br><br>
 
           <labeL >
-            Amount ( ₦):
-            <input type="number" id="amount" placeholder="Enter amount (₦)" required>
+            Email:
+          <input type="email" id="email" placeholder="Enter your email" required>
           </labeL><br><br>
 
           <labeL >
@@ -51,8 +61,8 @@
           </labeL><br><br>
 
           <input type="hidden" id="public_key" value=""/>
-          <input type="hidden" id="ppn" value=""/>
-          <button type="button" onclick="payWithPaystack()">Pay</button>
+          <input type="hidden" id="shareCode" value=""/>
+          <button type="button" onclick="payWithPaystack()">Donate</button>
         </form>
     </section>
 
@@ -64,18 +74,18 @@
     <!--<input type="hidden" id="base_url" value="http://127.0.0.1:5002" />-->
 
     <script>
-      const patientInput = document.getElementById("query");
-      const ppn = document.getElementById("ppn");
+      const shareCodeInput = document.getElementById("query");
+      const shareCode = document.getElementById("shareCode");
       const public_key = document.getElementById("public_key");
       const searchResult = document.getElementById("searchResult");
 
-      patientInput.addEventListener("input", function () {
-          const inputText = patientInput.value;
+      shareCodeInput.addEventListener("input", function () {
+          const inputText = shareCodeInput.value;
           const baseUrl = document.getElementById('base_url').value; // Get the base URL
 
-          if (inputText.length > 8) {
+          if (inputText.length ==6) {
               // Make a fetch call to get patient data
-              fetch(`${baseUrl}/web/verify_account?query=${inputText}`)
+              fetch(`${baseUrl}/web/verify_share_code?query=${inputText}`)
                   .then(response => {
                       if (!response.ok) {
                           throw new Error("Network response was not ok");
@@ -86,7 +96,7 @@
                       // Update the search result with fetched data
                       searchResult.innerText = `${data.patient}`;
                       public_key.value = `${data.public_key}`;
-                      ppn.value = `${data.ppn}`;
+                      shareCode.value = `${data.shareCode}`;
                   })
                   .catch(error => {
                       // Handle any errors that occurred during the fetch
@@ -102,7 +112,7 @@
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
       function payWithPaystack() {
-        const ppn = document.getElementById('ppn').value;
+        const shareCode = document.getElementById('shareCode').value;
         const public_key = document.getElementById('public_key').value;
         const email = document.getElementById('email').value;
         const amount = document.getElementById('amount').value * 100; // Convert to kobo
@@ -114,7 +124,7 @@
           amount: amount,
           currency: 'NGN',
           metadata: {
-            ppn: ppn, // Include user ID or other unique identifier
+            shareCode: shareCode, // Include user ID or other unique identifier
             category: 'patient',
             email: email, // Optionally include user email
             description: description, // Additional info
