@@ -30,7 +30,7 @@
         <form id="paymentForm">
 
           <labeL >
-            PPN/NHIS:
+            PPN:
             <input type="text" id="query" placeholder="Enter ppn or nhis number" required>
           </labeL>
           <p id="searchResult"></p> <br>
@@ -115,7 +115,7 @@
           currency: 'NGN',
           metadata: {
             ppn: ppn, // Include user ID or other unique identifier
-            category: 'patient',
+            transactionCategory: 'patient',
             email: email, // Optionally include user email
             description: description, // Additional info
           },
